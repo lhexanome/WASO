@@ -5,10 +5,10 @@ import com.google.gson.JsonObject;
 import fr.insalyon.waso.util.DBConnection;
 import fr.insalyon.waso.util.exception.DBException;
 import fr.insalyon.waso.util.exception.ServiceException;
+
 import java.util.List;
 
 /**
- *
  * @author WASO Team
  */
 public class ServiceObjetMetier {
@@ -45,4 +45,23 @@ public class ServiceObjetMetier {
         }
     }
 
+    public void rechercherPersonneParNom(String nomPersonne) throws ServiceException {
+        try {
+            nomPersonne = nomPersonne.replace("%", "!%");
+            List<Object[]> listePersonne = this.dBConnection.
+                    launchQueryWithArrayParameters("SELECT PersonneID FROM PERSONNE WHERE Nom LIKE ? ESCAPE '!'",
+                            '%' + nomPersonne + '%');
+
+            JsonArray jsonListe = new JsonArray();
+
+            for (Object[] row : listePersonne) {
+                jsonListe.add((Integer) row[0]);
+            }
+
+            this.container.add("idPersonnes", jsonListe);
+
+        } catch (DBException ex) {
+            throw new ServiceException("Exception in SOM rechercherPersonneParNom", ex);
+        }
+    }
 }

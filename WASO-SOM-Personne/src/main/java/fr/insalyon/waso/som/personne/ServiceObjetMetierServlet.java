@@ -60,7 +60,7 @@ public class ServiceObjetMetierServlet extends HttpServlet {
                 }
                 String nomPersonne = nomPersonneParametre;
 
-                //service.rechercherPersonneParNom(nomPersonne);
+                service.rechercherPersonneParNom(nomPersonne);
                 
             } else {
                 
