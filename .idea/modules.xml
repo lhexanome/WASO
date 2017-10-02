@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/WASO.iml" filepath="$PROJECT_DIR$/.idea/WASO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WASO-IHM-Web/WASO-IHM-Web.iml" filepath="$PROJECT_DIR$/WASO-IHM-Web/WASO-IHM-Web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WASO-SMA/WASO-SMA.iml" filepath="$PROJECT_DIR$/WASO-SMA/WASO-SMA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WASO-SOM-Client/WASO-SOM-Client.iml" filepath="$PROJECT_DIR$/WASO-SOM-Client/WASO-SOM-Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WASO-SOM-Personne/WASO-SOM-Personne.iml" filepath="$PROJECT_DIR$/WASO-SOM-Personne/WASO-SOM-Personne.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WASO-common/WASO-common.iml" filepath="$PROJECT_DIR$/WASO-common/WASO-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WASO-microCAS/WASO-microCAS.iml" filepath="$PROJECT_DIR$/WASO-microCAS/WASO-microCAS.iml" />
+    </modules>
+  </component>
+</project>

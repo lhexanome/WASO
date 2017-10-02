@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WASO-IHM-Web:war">
+    <output-path>$PROJECT_DIR$/WASO-IHM-Web/target</output-path>
+    <root id="archive" name="WASO-IHM-Web-0.1.war">
+      <element id="artifact" artifact-name="WASO-IHM-Web:war exploded" />
+    </root>
+  </artifact>
+</component>

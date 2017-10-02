@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WASO-SOM-Personne:war">
+    <output-path>$PROJECT_DIR$/WASO-SOM-Personne/target</output-path>
+    <root id="archive" name="WASO-SOM-Personne-0.1.war">
+      <element id="artifact" artifact-name="WASO-SOM-Personne:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WASO-microCAS:war">
+    <output-path>$PROJECT_DIR$/WASO-microCAS/target</output-path>
+    <root id="archive" name="WASO-microCAS-0.1.war">
+      <element id="artifact" artifact-name="WASO-microCAS:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="WASO-common" />
+        <module name="WASO-IHM-Web" />
+        <module name="WASO-microCAS" />
+        <module name="WASO-SMA" />
+        <module name="WASO-SOM-Client" />
+        <module name="WASO-SOM-Personne" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="WASO" target="1.5" />
+      <module name="WASO-common" target="1.6" />
+      <module name="WASO-IHM-Web" target="1.6" />
+      <module name="WASO-microCAS" target="1.6" />
+      <module name="WASO-SMA" target="1.6" />
+      <module name="WASO-SOM-Client" target="1.6" />
+      <module name="WASO-SOM-Personne" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

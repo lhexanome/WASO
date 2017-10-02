@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/WASO-IHM-Web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WASO-SMA" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WASO-SOM-Client" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WASO-SOM-Personne" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WASO-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WASO-microCAS" charset="UTF-8" />
+  </component>
+</project>
