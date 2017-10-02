@@ -139,8 +139,30 @@ public class AjaxAction {
     }
 
     void rechercherClientParDenomination(String denomination, String ville) throws ServiceException {
+        try {
+            JsonObject smaResultContainer = this.jsonHttpClient.post(
+                    this.smaUrl,
+                    new BasicNameValuePair("SMA", "rechercherClientParDenomination"),
+                    new BasicNameValuePair("denomination", denomination),
+                    new BasicNameValuePair("ville", ville)
+            );
 
-        // ...
+            if (smaResultContainer == null) {
+                throw new ServiceException("Appel impossible au SMA rechercherClientParNumero [" + this.smaUrl + "]");
+            }
+
+            if (smaResultContainer.getAsJsonArray("clients") == null) {
+                throw new ServiceException("Erreur: SMA rechercherClientParDenomination non-implémenté ??? [" + this.smaUrl + "]");
+            }
+            else {
+                JsonArray jsonListe = transformListeClient(smaResultContainer.getAsJsonArray("clients"));
+                this.container.add("clients", jsonListe);
+            }
+
+        } catch (IOException ex) {
+            throw new ServiceException("Exception in Ajax rechercherClientParDenomination", ex);
+        }
+
     }
 
     void rechercherClientParNomPersonne(String nomPersonne, String ville) throws ServiceException {

@@ -138,4 +138,35 @@ public class ServiceMetier {
         }
     }
 
+    public void rechercherClientParDenomination(String denomination, String ville) throws ServiceException {
+
+        try {
+
+            // 1. Obtenir la liste des Clients
+
+            JsonObject clientContainer = this.jsonHttpClient.post(this.somClientUrl,
+                    new BasicNameValuePair("SOM", "rechercherClientParDenomination"),
+                    new BasicNameValuePair("denomination", denomination),
+                    new BasicNameValuePair("ville", ville));
+
+            if (clientContainer == null) {
+                throw new ServiceException("Appel impossible au Service Client::rechercherClientParDenomination [" + this.somClientUrl + "]");
+            }
+
+            JsonArray jsonOutputClientListe = clientContainer.getAsJsonArray("clients"); //new JsonArray();
+
+
+            // 2. Construire la liste des Personnes pour chaque Client (directement dans le JSON)
+            insertPersonnesInJsonClientListe(jsonOutputClientListe,getJsonPersonnesHashed());
+
+
+            // 3. Ajouter la liste de Clients au conteneur JSON
+
+            this.container.add("clients", jsonOutputClientListe);
+
+        } catch (IOException ex) {
+            throw new ServiceException("Exception in SMA rechercherClientParDenomination", ex);
+        }
+
+    }
 }
