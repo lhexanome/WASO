@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 import fr.insalyon.waso.util.DBConnection;
 import fr.insalyon.waso.util.exception.DBException;
 import fr.insalyon.waso.util.exception.ServiceException;
+
 import java.util.List;
 import java.util.TreeMap;
 
 /**
- *
  * @author WASO Team
  */
 public class ServiceObjetMetier {
@@ -56,4 +56,34 @@ public class ServiceObjetMetier {
         }
     }
 
+    public void rechercherClientParNumero(Integer numero) throws ServiceException {
+        try {
+            JsonObject jsonObject = new JsonObject();
+
+            List<Object[]> listObject = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT WHERE ClientID = ?", numero);
+            if (listObject.size() == 0) return;
+
+            Object[] row = listObject.get(0);
+
+            Integer clientId = (Integer) row[0];
+            jsonObject.addProperty("id", clientId);
+            jsonObject.addProperty("type", (String) row[1]);
+            jsonObject.addProperty("denomination", (String) row[2]);
+            jsonObject.addProperty("adresse", (String) row[3]);
+            jsonObject.addProperty("ville", (String) row[4]);
+
+            List<Object[]> listePersonnes = this.dBConnection.launchQuery("SELECT ClientID, PersonneID FROM COMPOSER WHERE ClientID = ? ORDER BY ClientID,PersonneID", clientId);
+            JsonArray jsonSousListe = new JsonArray();
+            for (Object[] innerRow : listePersonnes) {
+                jsonSousListe.add((Integer) innerRow[1]);
+            }
+
+            jsonObject.add("personnes-ID", jsonSousListe);
+
+            this.container.add("client", jsonObject);
+
+        } catch (DBException ex) {
+            throw new ServiceException("Exception in SOM Client::ServiceObjetMetier", ex);
+        }
+    }
 }

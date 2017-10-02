@@ -5,12 +5,12 @@
         <servlet-class>fr.insalyon.waso.sma.ServiceMetierServlet</servlet-class>
         <init-param>
             <param-name>URL-SOM-Client</param-name>
-            <param-value>http://localhost:8080/WASO-SOM-Client/ServiceObjetMetier</param-value>
+            <param-value>http://localhost:8089/WASO-SOM-Client/ServiceObjetMetier</param-value>
             <!-- <param-value>http://192.168.56.104:8080/WASO-SOM-Client/ServiceObjetMetier</param-value> -->
         </init-param>
         <init-param>
             <param-name>URL-SOM-Personne</param-name>
-            <param-value>http://localhost:8080/WASO-SOM-Personne/ServiceObjetMetier</param-value>
+            <param-value>http://localhost:8089/WASO-SOM-Personne/ServiceObjetMetier</param-value>
             <!-- <param-value>http://192.168.56.104:8080/WASO-SOM-Personne/ServiceObjetMetier</param-value> -->
         </init-param>
     </servlet>

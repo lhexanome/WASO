@@ -62,7 +62,7 @@ public class ServiceObjetMetierServlet extends HttpServlet {
                 }
                 Integer numero = Integer.parseInt(numeroParametre);
 
-                //service.rechercherClientParNumero(numero);
+                service.rechercherClientParNumero(numero);
 
             } else if ("rechercherClientParDenomination".equals(som)) {
 

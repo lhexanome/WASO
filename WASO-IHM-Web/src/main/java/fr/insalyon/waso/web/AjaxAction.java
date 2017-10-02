@@ -123,11 +123,13 @@ public class AjaxAction {
                 throw new ServiceException("Appel impossible au SMA rechercherClientParNumero [" + this.smaUrl + "]");
             }
             
-            if (smaResultContainer.getAsJsonArray("clients") == null) {
-                //throw new ServiceException("Erreur: SMA rechercherClientParNumero non-implémenté ??? [" + this.smaUrl + "]");
+            if (smaResultContainer.getAsJsonObject("client") == null) {
+                throw new ServiceException("Erreur: SMA rechercherClientParNumero non-implémenté ??? [" + this.smaUrl + "]");
             }
             else {
-                JsonArray jsonListe = transformListeClient(smaResultContainer.getAsJsonArray("clients"));
+                JsonArray jsonElements = new JsonArray();
+                jsonElements.add(smaResultContainer.getAsJsonObject("client"));
+                JsonArray jsonListe = transformListeClient(jsonElements);
                 this.container.add("clients", jsonListe);
             }
 
