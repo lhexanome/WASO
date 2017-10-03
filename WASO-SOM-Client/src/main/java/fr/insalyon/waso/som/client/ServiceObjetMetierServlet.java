@@ -81,8 +81,24 @@ public class ServiceObjetMetierServlet extends HttpServlet {
 
             } else if ("rechercherClientParPersonne".equals(som)) {
 
+                String personneIdsStr = request.getParameter("personneIds");
+                String ville = request.getParameter("ville");
 
-                //service.rechercherClientParPersonne(personneIds, ville);
+                if( personneIdsStr == null ){
+                    throw new ServiceException("Paramètres incomplets");
+                }
+
+                if( ville == null ){
+                    ville = "";
+                }
+
+                String[] personneIdsSplit = personneIdsStr.split(",");
+                int[] personneIds = new int[personneIdsSplit.length];
+                for(int i = 0; i < personneIds.length; i++){
+                    personneIds[i] = Integer.parseInt(personneIdsSplit[i]);
+                }
+
+                service.rechercherClientParPersonne(personneIds, ville);
 
             } else {
 

@@ -70,8 +70,18 @@ public class ServiceMetierServlet extends HttpServlet {
 
             } else if ("rechercherClientParNomPersonne".equals(sma)) {
 
-                
-                // service.rechercherClientParNomPersonne(nomPersonne,ville);
+                String nomPersonne = request.getParameter("nomPersonne");
+                String ville = request.getParameter("ville");
+
+                if( nomPersonne == null ){
+                    throw new ServiceException("Paramètres incomplets");
+                }
+
+                if( ville == null ){
+                    ville = "";
+                }
+
+                service.rechercherClientParNomPersonne(nomPersonne,ville);
 
             } else {
 

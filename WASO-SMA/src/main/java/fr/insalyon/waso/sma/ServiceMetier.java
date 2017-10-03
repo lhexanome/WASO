@@ -169,4 +169,60 @@ public class ServiceMetier {
         }
 
     }
+
+    public void rechercherClientParNomPersonne(String nomPersonne, String ville) throws ServiceException {
+
+        try {
+
+            JsonArray jsonOutputClientListe;
+
+            // 1. Obtenir la liste des id des personnes cherchées
+
+            JsonObject personnesIdsContainer = this.jsonHttpClient.post(this.somPersonneUrl,
+                    new BasicNameValuePair("SOM", "rechercherPersonneParNom"),
+                    new BasicNameValuePair("nom-personne", nomPersonne));
+
+            if (personnesIdsContainer == null) {
+                throw new ServiceException("Appel impossible au Service Personne::rechercherPersonneParNom [" + this.somPersonneUrl + "]");
+            }
+
+            JsonArray jsonOutputPersonnesIdsListe = personnesIdsContainer.getAsJsonArray("idPersonnes"); //new JsonArray();
+
+            // SKIP STEP 2,3 and 4 if emptyListe
+            // because if list is empty the SOM rechercherClientParPersonne FAIL
+            if(jsonOutputPersonnesIdsListe.size()==0) {
+                jsonOutputClientListe = new JsonArray(); // result is empty array
+            }else {
+
+                // 2. Convertir la liste des ids des personnes en un String constituer des ids separer par ','
+
+                String jsonOutputPersonnesIdsListeAsString = jsonOutputPersonnesIdsListe.toString();
+                String personnesIdsParam = jsonOutputPersonnesIdsListeAsString.substring(1, jsonOutputPersonnesIdsListeAsString.length() - 1);
+
+                // 3. Obtenir la liste des Clients depuis l'id des personnes trouvées
+
+                JsonObject clientContainer = this.jsonHttpClient.post(this.somClientUrl,
+                        new BasicNameValuePair("SOM", "rechercherClientParPersonne"),
+                        new BasicNameValuePair("personneIds", personnesIdsParam),
+                        new BasicNameValuePair("ville", ville));
+
+                if (clientContainer == null) {
+                    throw new ServiceException("Appel impossible au Service Client::rechercherClientParPersonne [" + this.somClientUrl + "]");
+                }
+
+                jsonOutputClientListe = clientContainer.getAsJsonArray("clients"); //new JsonArray();
+
+
+                // 4. Construire la liste des Personnes pour chaque Client (directement dans le JSON)
+                insertPersonnesInJsonClientListe(jsonOutputClientListe, getJsonPersonnesHashed());
+            }
+
+            // 5. Ajouter la liste de Clients au conteneur JSON
+
+            this.container.add("clients", jsonOutputClientListe);
+
+        } catch (IOException ex) {
+            throw new ServiceException("Exception in SMA rechercherClientParNomPersonne", ex);
+        }
+    }
 }
