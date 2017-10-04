@@ -28,14 +28,8 @@ public class ServiceObjetMetier {
             JsonArray jsonListe = new JsonArray();
 
             for (Object[] row : listePersonne) {
-                JsonObject jsonItem = new JsonObject();
 
-                jsonItem.addProperty("id", (Integer) row[0]);
-                jsonItem.addProperty("nom", (String) row[1]);
-                jsonItem.addProperty("prenom", (String) row[2]);
-                jsonItem.addProperty("mail", (String) row[3]);
-
-                jsonListe.add(jsonItem);
+                jsonListe.add(sqlPersonneToJsonPersonne(row));
             }
 
             this.container.add("personnes", jsonListe);
@@ -63,5 +57,18 @@ public class ServiceObjetMetier {
         } catch (DBException ex) {
             throw new ServiceException("Exception in SOM rechercherPersonneParNom", ex);
         }
+    }
+
+    private JsonObject sqlPersonneToJsonPersonne(Object[] row) throws DBException {
+
+        JsonObject jsonItem = new JsonObject();
+
+        jsonItem.addProperty("id", (Integer) row[0]);
+        jsonItem.addProperty("nom", (String) row[1]);
+        jsonItem.addProperty("prenom", (String) row[2]);
+        jsonItem.addProperty("mail", (String) row[3]);
+
+        return jsonItem;
+
     }
 }

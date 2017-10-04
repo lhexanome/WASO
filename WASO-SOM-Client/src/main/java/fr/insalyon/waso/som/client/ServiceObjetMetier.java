@@ -31,24 +31,7 @@ public class ServiceObjetMetier {
             List<Object[]> listeClients = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT ORDER BY ClientID");
 
             for (Object[] row : listeClients) {
-                JsonObject jsonItem = new JsonObject();
-
-                Integer clientId = (Integer) row[0];
-                jsonItem.addProperty("id", clientId);
-                jsonItem.addProperty("type", (String) row[1]);
-                jsonItem.addProperty("denomination", (String) row[2]);
-                jsonItem.addProperty("adresse", (String) row[3]);
-                jsonItem.addProperty("ville", (String) row[4]);
-
-                List<Object[]> listePersonnes = this.dBConnection.launchQuery("SELECT ClientID, PersonneID FROM COMPOSER WHERE ClientID = ? ORDER BY ClientID,PersonneID", clientId);
-                JsonArray jsonSousListe = new JsonArray();
-                for (Object[] innerRow : listePersonnes) {
-                    jsonSousListe.add((Integer) innerRow[1]);
-                }
-
-                jsonItem.add("personnes-ID", jsonSousListe);
-
-                jsonListe.add(jsonItem);
+                jsonListe.add(sqlClientToJsonClient(row));
             }
 
             this.container.add("clients", jsonListe);
@@ -60,29 +43,11 @@ public class ServiceObjetMetier {
 
     public void rechercherClientParNumero(Integer numero) throws ServiceException {
         try {
-            JsonObject jsonObject = new JsonObject();
 
             List<Object[]> listObject = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT WHERE ClientID = ?", numero);
             if (listObject.size() == 0) return;
 
-            Object[] row = listObject.get(0);
-
-            Integer clientId = (Integer) row[0];
-            jsonObject.addProperty("id", clientId);
-            jsonObject.addProperty("type", (String) row[1]);
-            jsonObject.addProperty("denomination", (String) row[2]);
-            jsonObject.addProperty("adresse", (String) row[3]);
-            jsonObject.addProperty("ville", (String) row[4]);
-
-            List<Object[]> listePersonnes = this.dBConnection.launchQuery("SELECT ClientID, PersonneID FROM COMPOSER WHERE ClientID = ? ORDER BY ClientID,PersonneID", clientId);
-            JsonArray jsonSousListe = new JsonArray();
-            for (Object[] innerRow : listePersonnes) {
-                jsonSousListe.add((Integer) innerRow[1]);
-            }
-
-            jsonObject.add("personnes-ID", jsonSousListe);
-
-            this.container.add("client", jsonObject);
+            this.container.add("client", sqlClientToJsonClient(listObject.get(0)));
 
         } catch (DBException ex) {
             throw new ServiceException("Exception in SOM Client::ServiceObjetMetier", ex);
@@ -103,24 +68,7 @@ public class ServiceObjetMetier {
                     '%'+ville+'%');
 
             for (Object[] row : listeClients) {
-                JsonObject jsonItem = new JsonObject();
-
-                Integer clientId = (Integer) row[0];
-                jsonItem.addProperty("id", clientId);
-                jsonItem.addProperty("type", (String) row[1]);
-                jsonItem.addProperty("denomination", (String) row[2]);
-                jsonItem.addProperty("adresse", (String) row[3]);
-                jsonItem.addProperty("ville", (String) row[4]);
-
-                List<Object[]> listePersonnes = this.dBConnection.launchQuery("SELECT ClientID, PersonneID FROM COMPOSER WHERE ClientID = ? ORDER BY ClientID,PersonneID", clientId);
-                JsonArray jsonSousListe = new JsonArray();
-                for (Object[] innerRow : listePersonnes) {
-                    jsonSousListe.add((Integer) innerRow[1]);
-                }
-
-                jsonItem.add("personnes-ID", jsonSousListe);
-
-                jsonListe.add(jsonItem);
+                jsonListe.add(sqlClientToJsonClient(row));
             }
 
             this.container.add("clients", jsonListe);
@@ -148,30 +96,15 @@ public class ServiceObjetMetier {
                         personneId);// [*1] '%' + ville + '%'
 
                 for (Object[] row : listeClients) {
-                    JsonObject jsonItem = new JsonObject();
 
                     Integer clientId = (Integer) row[0];
 
                     if(!clientsIds.contains(clientId)
                             && ((String)(row[4])).indexOf(ville)!= -1) {// [*1]
 
+                        jsonListe.add(sqlClientToJsonClient(row));
+
                         clientsIds.add(clientId);
-
-                        jsonItem.addProperty("id", clientId);
-                        jsonItem.addProperty("type", (String) row[1]);
-                        jsonItem.addProperty("denomination", (String) row[2]);
-                        jsonItem.addProperty("adresse", (String) row[3]);
-                        jsonItem.addProperty("ville", (String) row[4]);
-
-                        List<Object[]> listePersonnes = this.dBConnection.launchQuery("SELECT ClientID, PersonneID FROM COMPOSER WHERE ClientID = ? ORDER BY ClientID,PersonneID", clientId);
-                        JsonArray jsonSousListe = new JsonArray();
-                        for (Object[] innerRow : listePersonnes) {
-                            jsonSousListe.add((Integer) innerRow[1]);
-                        }
-
-                        jsonItem.add("personnes-ID", jsonSousListe);
-
-                        jsonListe.add(jsonItem);
                     }
                 }
             }
@@ -181,5 +114,29 @@ public class ServiceObjetMetier {
         } catch (DBException ex) {
             throw new ServiceException("Exception in SOM Client::rechercherClientParPersonne", ex);
         }
+    }
+
+    private JsonObject sqlClientToJsonClient(Object[] row) throws DBException {
+
+        int clientId = (Integer) row[0];
+
+        JsonObject jsonItem = new JsonObject();
+
+        jsonItem.addProperty("id", clientId);
+        jsonItem.addProperty("type", (String) row[1]);
+        jsonItem.addProperty("denomination", (String) row[2]);
+        jsonItem.addProperty("adresse", (String) row[3]);
+        jsonItem.addProperty("ville", (String) row[4]);
+
+        List<Object[]> listePersonnes = this.dBConnection.launchQuery("SELECT ClientID, PersonneID FROM COMPOSER WHERE ClientID = ? ORDER BY ClientID,PersonneID", clientId);
+        JsonArray jsonSousListe = new JsonArray();
+        for (Object[] innerRow : listePersonnes) {
+            jsonSousListe.add((Integer) innerRow[1]);
+        }
+
+        jsonItem.add("personnes-ID", jsonSousListe);
+
+        return jsonItem;
+
     }
 }
